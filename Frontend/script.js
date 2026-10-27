@@ -9,7 +9,11 @@ const newImageBtn = document.getElementById("newImageBtn");
 const buttonText = document.getElementById("buttonText");
 const errorMessage = document.getElementById("errorMessage");
 
-let imageCount = 0;
+let imgCount_local=localStorage.getItem("count_img_search")
+
+let imageCount = imgCount_local || 0;
+   
+imageNumber.textContent=`#${imageCount}`
 
 async function loadRandomImage() {
   // Start loading
@@ -47,6 +51,10 @@ async function loadRandomImage() {
 
       newImageBtn.disabled = false;
       buttonText.textContent = "Generate New Image";
+
+      localStorage.setItem("count_img_search", imageCount);
+
+
     };
 
     image.onerror = () => {
