@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>PixelGlow | Random Image Generator</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Background glow effects -->
+  <div class="glow glow-one"></div>
+  <div class="glow glow-two"></div>
+
+  <!-- Navigation -->
+  <header class="navbar">
+    <a href="index.html" class="logo">
+      <span class="logo-icon">✦</span>
+      PixelGlow
+    </a>
+
+    <nav class="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+
+    <a href="#generator" class="nav-button">Explore Images ↗</a>
+  </header>
+
+  <!-- Main content -->
+  <main>
+
+    <!-- Hero section -->
+    <section class="hero">
+      <span class="eyebrow">
+        <span class="status-dot"></span>
+        YOUR DAILY DOSE OF INSPIRATION
+      </span>
+
+      <h1>
+        Discover something
+        <span class="gradient-text">beautiful.</span>
+      </h1>
+
+      <p class="hero-description">
+       Discover new picture ,give new colors to  your image
+      </p>
+
+      <a href="#generator" class="primary-button">
+        Generate Images <span>↓</span>
+      </a>
+    </section>
+
+    <!-- Image generator section -->
+    <section class="generator-section" id="generator">
+
+      <div class="section-heading">
+        <div>
+          <span class="section-label">THE IMAGE STUDIO</span>
+          <h2>Your next discovery</h2>
+        </div>
+
+        <span class="live-badge">
+          <span class="status-dot"></span>
+          LIVE GENERATOR
+        </span>
+      </div>
+
+      <div class="image-card">
+
+        <div class="image-topbar">
+          <div class="window-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+
+          <span class="image-tag">RANDOM / DISCOVER</span>
+        </div>
+
+        <div class="image-box">
+          <div class="image-placeholder" id="imagePlaceholder">
+            <span class="placeholder-icon">✧</span>
+            <p>Your next beautiful image awaits</p>
+            <span>Click the button below to begin</span>
+          </div>
+
+          <img
+            id="randomImage"
+            alt="Randomly discovered image"
+            hidden
+          >
+        </div>
+
+        <div class="image-details">
+          <div>
+            <span class="detail-label">YOUR DISCOVERY</span>
+            <h3 id="imageInfo">Image not loaded yet</h3>
+          </div>
+
+          <span class="image-number" id="imageNumber">#000</span>
+        </div>
+
+        <button id="newImageBtn" class="generate-button">
+          <span class="button-icon">✦</span>
+          <span id="buttonText">Generate New Image</span>
+          <span class="button-arrow">↗</span>
+        </button>
+
+        <p id="errorMessage" class="error-message" role="alert"></p>
+
+      </div>
+
+      <p class="generator-note">
+        ✦ Every click brings a new possibility.
+      </p>
+      Every time new photo Generate 
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <a href="index.html" class="footer-logo">✦ PixelGlow</a>
+
+    <p>Made for curious minds. © 2026 PixelGlow</p>
+
+    <div class="footer-links">
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
