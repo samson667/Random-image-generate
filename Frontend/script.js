@@ -1,5 +1,5 @@
 
-const API_URL = "http://localhost:3000/api/image";
+const API_URL = " https://random-image-generate-31c8.onrender.com/api/image";
 
 const randomImage = document.getElementById("randomImage");
 const imagePlaceholder = document.getElementById("imagePlaceholder");
@@ -12,26 +12,26 @@ const errorMessage = document.getElementById("errorMessage");
 let imageCount = 0;
 
 async function loadRandomImage() {
-  // Loading শুরু
+  // Start loading
   newImageBtn.disabled = true;
   buttonText.textContent = "Discovering...";
   errorMessage.textContent = "";
 
   try {
-    // Backend API-তে request পাঠানো
+    // Send a request to the backend API
     const response = await fetch(API_URL);
 
     if (!response.ok) {
-      throw new Error("Backend থেকে সঠিক response আসেনি।");
+      throw new Error("The backend did not return a valid response.");
     }
 
     const data = await response.json();
 
     if (!data.imageUrl) {
-      throw new Error("Backend image URL পাঠায়নি।");
+      throw new Error("The backend did not provide an image URL.");
     }
 
-    // Image load হওয়া পর্যন্ত অপেক্ষা
+    // Wait until the image loads
     const image = new Image();
 
     image.onload = () => {
@@ -51,7 +51,7 @@ async function loadRandomImage() {
 
     image.onerror = () => {
       errorMessage.textContent =
-        "ছবিটি লোড হয়নি। আবার চেষ্টা করো।";
+        "The image failed to load. Please try again.";
 
       newImageBtn.disabled = false;
       buttonText.textContent = "Try Again";
@@ -63,11 +63,12 @@ async function loadRandomImage() {
     console.error(error);
 
     errorMessage.textContent =
-      "Server no more run..."
+      "The server is no longer running.";
+
     newImageBtn.disabled = false;
     buttonText.textContent = "Try Again";
   }
 }
 
-// Button click করলে নতুন ছবি আসবে
+// Load a new image when the button is clicked
 newImageBtn.addEventListener("click", loadRandomImage);
