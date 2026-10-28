@@ -80,3 +80,6 @@ async function loadRandomImage() {
 
 // Load a new image when the button is clicked
 newImageBtn.addEventListener("click", loadRandomImage);
+
+
+v
