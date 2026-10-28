@@ -82,3 +82,16 @@ async function loadRandomImage() {
 newImageBtn.addEventListener("click", loadRandomImage);
 
 
+import { requestPermission } from "./Firebase.js";
+
+const notifyBtn = document.getElementById("notifyBtn");
+
+if (notifyBtn) {
+  notifyBtn.addEventListener("click", async () => {
+    console.log("Button clicked, requesting permission...");
+    const token = await requestPermission();
+    if (token) {
+      console.log("Token successfully retrieved:", token);
+    }
+  });
+}
