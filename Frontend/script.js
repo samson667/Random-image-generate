@@ -82,4 +82,3 @@ async function loadRandomImage() {
 newImageBtn.addEventListener("click", loadRandomImage);
 
 
-v
