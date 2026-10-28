@@ -1,9 +1,8 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getMessaging, getToken } from "firebase/messaging"; // ১.Messaging ফাংশনগুলো ইমপোর্ট করা হলো
+// Firebase SDK CDN লিংক ব্যবহার করা হলো
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging.js";
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCFAtsRQbXsbsc1h9pNyuaHU86IOYUi7Kk",
   authDomain: "random-photo-generate.firebaseapp.com",
@@ -14,14 +13,13 @@ const firebaseConfig = {
   measurementId: "G-F8V6WMY6HY"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
-// ২. Messaging ইনিশিয়ালাইজ করা হলো যাতে getToken কাজ করতে পারে
+// Messaging ইনস্ট্যান্স এক্সপোর্ট করা হলো
 export const messaging = getMessaging(app);
 
-// নোটিফিকেশন পারমিশন ও টোকেন নেওয়ার ফাংশন
+// নোটিফিকেশন পারমিশন ও টোকেন নেওয়ার ফাংশন
 export async function requestPermission() {
   try {
     const permission = await Notification.requestPermission();
@@ -30,7 +28,6 @@ export async function requestPermission() {
         vapidKey: "BO0U4YIExcNkU67djM27Q4NcEMO_BP6-1s7yPzxY4LzyQeRcqGUsLW6BASB_RPqtVa56iAu-6r-qqZA-UwBPOpk"
       });
       console.log("FCM Device Token:", token);
-      
       return token;
     } else {
       console.log("Notification permission rejected.");
