@@ -1,5 +1,21 @@
 import { requestPermission } from "./Firebase.js";
 
+// ১. পেজ লোড হওয়ার সাথে সাথে সার্ভিস ওয়ার্কার রেজিস্টার করা বাধ্যতামূলক
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', async () => {
+    try {
+      const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+      console.log('Service Worker registered successfully with scope:', registration.scope);
+    } catch (error) {
+      console.error('Service Worker registration failed:', error);
+    }
+  });
+}
+
+// (বাকি ইমেজ জেনারেশন এবং আগের কোডগুলো যেমন ছিল তেমনই থাকবে)
+
+
+
 const API_URL = "https://random-image-generate-31c8.onrender.com/api/image";
 
 const randomImage = document.getElementById("randomImage");
