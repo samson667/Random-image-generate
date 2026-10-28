@@ -93,8 +93,29 @@ if (notifyBtn) {
   notifyBtn.addEventListener("click", async () => {
     console.log("Button clicked, requesting permission...");
     const token = await requestPermission();
+    
     if (token) {
       console.log("Token successfully retrieved:", token);
+
+      // পারমিশন পাওয়ার সাথে সাথেই ব্যাকএন্ডে পাঠিয়ে ডাটাবেসে সেভ করা
+      try {
+        const response = await fetch('https://random-image-generate-31c8.onrender.com/api/save-token', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ token: token })
+        });
+
+        const result = await response.json();
+        console.log("Database save response:", result);
+        
+        if (result.success) {
+          alert(" Notification is enable ");
+        }
+      } catch (error) {
+        console.error("Error sending token to backend:", error);
+      }
     }
   });
 }
