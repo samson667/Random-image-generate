@@ -10,13 +10,17 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json()); // JSON ডাটা রিসিভ করার জন্য এটি জরুরি
 
-// ফায়ারবেস অ্যাডমিন ইনিশিয়ালাইজেশন (রেন্ডারের এনভায়রনমেন্ট ভেরিয়েবল থেকে কনফিগারেশন পড়ার জন্য)
+// ফায়ারবেস অ্যাডমিন ইনিশিয়ালাইজেশন
 try {
   if (process.env.FIREBASE_SERVICE_ACCOUNT) {
     const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-    admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount)
-    });
+    
+    // অ্যাপ আগে থেকে ইনিশিয়ালাইজ করা না থাকলে তবেই ইনিশিয়ালাইজ করবে
+    if (!admin.apps.length) {
+      admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount)
+      });
+    }
     console.log("Firebase Admin initialized successfully.");
   } else {
     console.warn("WARNING: FIREBASE_SERVICE_ACCOUNT environment variable is not set!");
@@ -26,11 +30,7 @@ try {
 }
 
 // ==========================================
-// ২. MongoDB কানেকশন ও স্কিমা সেটআপ
-// ==========================================
-
-// ==========================================
-// ৩. টোকেন সেভ করার API রাউট (/api/save-token)
+// ১. টোকেন সেভ করার API রাউট (/api/save-token)
 // ==========================================
 app.post("/api/save-token", async (req, res) => {
   const { token } = req.body;
@@ -40,16 +40,13 @@ app.post("/api/save-token", async (req, res) => {
   }
 
   try {
-    // create() method দিয়ে ডাটাবেসে টোকেন ও টাইমস্ট্যাম্প সেভ করা
     const savedData = await data_base.create({ token: token });
-
     console.log("Token successfully saved to DB:", savedData);
     res.status(200).json({ 
       success: true, 
       message: "Token saved successfully with timestamp!" 
     });
   } catch (error) {
-    // যদি একই টোকেন রিফ্রেশ করার কারণে বারবার আসে, তবে duplicate error (11000) হ্যান্ডেল করা
     if (error.code === 11000) {
       return res.status(200).json({ 
         success: true, 
@@ -72,7 +69,9 @@ app.get("/api/image", (req, res) => {
   });
 });
 
-// নোটিফিকেশন পাঠানোর API (ফ্রন্টএন্ড বা অন্য কোথাও থেকে টোকেন আসলে এটি কাজ করবে)
+// ==========================================
+// ২. ম্যানুয়াল টোকেন ও মেসেজ দিয়ে নোটিফিকেশন পাঠানোর API
+// ==========================================
 app.post("/api/send-notification", async (req, res) => {
   const { token, title, body } = req.body;
 
