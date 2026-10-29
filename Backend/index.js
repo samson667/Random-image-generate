@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from "cors";
-import admin from "firebase-admin";
+import admin from "firebase-admin/app";
 import data_base from './atlas.js';
 
 const app = express();
