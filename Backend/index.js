@@ -3,19 +3,7 @@ import cors from 'cors';
 import { initializeApp, cert, getApps } from "firebase-admin/app";
 import { getMessaging } from "firebase-admin/messaging";
 import data_base from './atlas.js';
-import { createRequire } from "module";
 
-import { initializeApp, cert, getApps } from "firebase-admin/app";
-import { getMessaging } from "firebase-admin/messaging";
-
-// এনভায়রনমেন্ট ভ্যারিয়েবল থেকে ফায়ারবেস সার্ভিস ক্রিকেনশিয়াল রিড করা
-const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE);
-
-if (!getApps().length) {
-  initializeApp({
-    credential: cert(serviceAccount)
-  });
-}
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -23,10 +11,13 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json()); // JSON ডাটা রিসিভ করার জন্য এটি জরুরি
 
-// ফায়ারবেস অ্যাডমিন ইনিশিয়ালাইজেশন
+// ফায়ারবেস অ্যাডমিন ইনিশিয়ালাইজেশন (সঠিক এনভায়রনমেন্ট ভ্যারিয়েবল নাম দিয়ে)
 try {
-  if (process.env.FIREBASE_SERVICE_ACCOUNT) {
-    const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+  // Render-এ আপনার দেওয়া ভ্যারিয়েবলের নাম FIREBASE_SERVICE
+  const serviceAccountEnv = process.env.FIREBASE_SERVICE || process.env.FIREBASE_SERVICE_ACCOUNT;
+
+  if (serviceAccountEnv) {
+    const serviceAccount = JSON.parse(serviceAccountEnv);
     
     // অ্যাপ আগে থেকে ইনিশিয়ালাইজ করা না থাকলে তবেই ইনিশিয়ালাইজ করবে
     if (getApps().length === 0) {
@@ -36,7 +27,7 @@ try {
     }
     console.log("Firebase Admin initialized successfully.");
   } else {
-    console.warn("WARNING: FIREBASE_SERVICE_ACCOUNT environment variable is not set!");
+    console.warn("WARNING: FIREBASE_SERVICE environment variable is not set!");
   }
 } catch (error) {
   console.error("Failed to initialize Firebase Admin:", error);
@@ -83,7 +74,7 @@ app.get("/api/image", (req, res) => {
 });
 
 // ==========================================
-// ২. ম্যানুয়াল টোকেন ও মেসেজ দিয়ে নোটিফিকেশন পাঠানোর API
+// ২. ম্যানুয়াল টোকেন ও মেসেজ দিয়ে নোটিফিকেশন পাঠানোর API
 // ==========================================
 app.post("/api/send-notification", async (req, res) => {
   const { token, title, body } = req.body;
@@ -92,35 +83,33 @@ app.post("/api/send-notification", async (req, res) => {
     return res.status(400).json({ error: "FCM token is required" });
   }
 
- // Backend notification payload structure
-const message = {
-  token: token,
-  notification: {
-    title: title,
-    body: body,
-  },
-  data: {
-    title: title,
-    body: body,
-    url: "https://random-photo-generate.netlify.app"
-  },
-  webpush: {
-    headers: {
-      Urgency: "high"
-    },
+  // Backend notification payload structure
+  const message = {
+    token: token,
     notification: {
       title: title,
       body: body,
-      icon: "/favicon.ico",
-      requireInteraction: true // Screen-e thakbe jotokhon na user dismiss korche
+    },
+    data: {
+      title: title,
+      body: body,
+      url: "https://random-photo-generate.netlify.app"
+    },
+    webpush: {
+      headers: {
+        Urgency: "high"
+      },
+      notification: {
+        title: title,
+        body: body,
+        icon: "/favicon.ico",
+        requireInteraction: true
+      }
     }
-  }
-};
-
-await admin.messaging().send(message);
+  };
 
   try {
-    // এখানে সরাসরি getMessaging().send() ব্যবহার করা হয়েছে যা ES Module এ ১০০% কাজ করে
+    // এখানে সরাসরি getMessaging().send() ব্যবহার করা হয়েছে যা ES Module এ ১০০% কাজ করে
     const response = await getMessaging().send(message);
     console.log("Successfully sent message:", response);
     res.status(200).json({ success: true, message: "Notification sent successfully", response });
