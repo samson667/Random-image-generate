@@ -1,4 +1,16 @@
-import { requestPermission } from "./Firebase.js";
+import { messaging } from "./Firebase.js";
+import { onMessage } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging.js";
+
+onMessage(messaging, async (payload) => {
+  console.log("Foreground message:", payload);
+  const reg = await navigator.serviceWorker.getRegistration('/firebase-messaging-sw.js');
+  if (reg) {
+    reg.showNotification(payload.notification?.title || "PixelGlow", {
+      body: payload.notification?.body || "",
+      icon: '/favicon.ico'
+    });
+  }
+});
 
 // ১. পেজ লোড হওয়ার সাথে সাথে সার্ভিস ওয়ার্কার রেজিস্টার করা বাধ্যতামূলক
 if ('serviceWorker' in navigator) {
