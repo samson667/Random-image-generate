@@ -1,6 +1,6 @@
 import { messaging } from "./firebase.js";
 import { onMessage } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging.js";
-import { requestPermission } from './firebase.js'; 
+import { requestPermission } from './Firebase.js'; 
 
 onMessage(messaging, async (payload) => {
   console.log("Foreground message:", payload);
