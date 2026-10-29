@@ -80,13 +80,19 @@ app.post("/api/send-notification", async (req, res) => {
     return res.status(400).json({ error: "FCM token is required" });
   }
 
-  const message = {
-    notification: {
-      title: title || "PixelGlow Notification",
-      body: body || "আপনার জন্য নতুন একটি ছবি জেনারেট করা হয়েছে!"
-    },
-    token: token
-  };
+ const message = {
+  notification: {
+    title: title || "PixelGlow Notification",
+    body: body || "আপনার জন্য নতুন একটি ছবি জেনারেট করা হয়েছে!"
+  },
+  webpush: {
+    headers: {
+      Urgency: "high",
+      TTL: "300"
+    }
+  },
+  token: token
+};
 
   try {
     // এখানে সরাসরি getMessaging().send() ব্যবহার করা হয়েছে যা ES Module এ ১০০% কাজ করে
