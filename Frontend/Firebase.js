@@ -19,14 +19,20 @@ const analytics = getAnalytics(app);
 // Messaging ইনস্ট্যান্স এক্সপোর্ট করা হলো
 export const messaging = getMessaging(app);
 
-// নোটিফিকেশন পারমিশন ও টোকেন নেওয়ার ফাংশন
+// নোটিফিকেশন পারমিশন ও টোকেন নেওয়ার আপডেট করা ফাংশন
 export async function requestPermission() {
   try {
     const permission = await Notification.requestPermission();
     if (permission === "granted") {
+      
+      // সার্ভিস ওয়ার্কার ম্যানুয়ালি রেজিস্টার করে টোকেন পাওয়া নিশ্চিত করা
+      const serviceWorkerRegistration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+
       const token = await getToken(messaging, {
-        vapidKey: "BO0U4YIExcNkU67djM27Q4NcEMO_BP6-1s7yPzxY4LzyQeRcqGUsLW6BASB_RPqtVa56iAu-6r-qqZA-UwBPOpk"
+        vapidKey: "BO0U4YIExcNkU67djM27Q4NcEMO_BP6-1s7yPzxY4LzyQeRcqGUsLW6BASB_RPqtVa56iAu-6r-qqZA-UwBPOpk",
+        serviceWorkerRegistration: serviceWorkerRegistration // এটি সবচেয়ে গুরুত্বপূর্ণ!
       });
+
       console.log("FCM Device Token:", token);
       return token;
     } else {

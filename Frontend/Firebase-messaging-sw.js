@@ -2,7 +2,6 @@
 importScripts('https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging-compat.js');
 
-// প্রজেক্টের Firebase কনফিগারেশন
 firebase.initializeApp({
   apiKey: "AIzaSyCFatsRQbXsbsc1h9PnyuaU86IOYUi7Kk",
   authDomain: "random-photo-generate.firebaseapp.com",
@@ -15,14 +14,14 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-// ব্যাকগ্রাউন্ড নোটিফিকেশন হ্যান্ডেল করার কোড
+// ব্যাকগ্রাউন্ড মেসেজ রিসিভ করা
 messaging.onBackgroundMessage((payload) => {
   console.log('[firebase-messaging-sw.js] Received background message: ', payload);
   
-  const notificationTitle = payload.notification.title;
+  const notificationTitle = payload.notification?.title || "PixelGlow Notification";
   const notificationOptions = {
-    body: payload.notification.body,
-    icon: payload.notification.icon || '/favicon.ico'
+    body: payload.notification?.body || "আপনার জন্য নতুন আপডেট এসেছে!",
+    icon: '/favicon.ico'
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);
