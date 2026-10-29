@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from "cors";
-import admin from "firebase-admin/app";
+import { initializeApp, cert, getApps } from "firebase-admin/app";
+import { getMessaging } from "firebase-admin/messaging";
 import data_base from './atlas.js';
 
 const app = express();
@@ -16,9 +17,9 @@ try {
     const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
     
     // অ্যাপ আগে থেকে ইনিশিয়ালাইজ করা না থাকলে তবেই ইনিশিয়ালাইজ করবে
-    if (!admin.apps.length) {
-      admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount)
+    if (getApps().length === 0) {
+      initializeApp({
+        credential: cert(serviceAccount)
       });
     }
     console.log("Firebase Admin initialized successfully.");
@@ -88,7 +89,8 @@ app.post("/api/send-notification", async (req, res) => {
   };
 
   try {
-    const response = await admin.messaging().send(message);
+    // এখানে সরাসরি getMessaging().send() ব্যবহার করা হয়েছে যা ES Module এ ১০০% কাজ করে
+    const response = await getMessaging().send(message);
     console.log("Successfully sent message:", response);
     res.status(200).json({ success: true, message: "Notification sent successfully", response });
   } catch (error) {
