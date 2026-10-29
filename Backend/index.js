@@ -5,15 +5,17 @@ import { getMessaging } from "firebase-admin/messaging";
 import data_base from './atlas.js';
 import { createRequire } from "module";
 
-const require = createRequire(import.meta.url);
-const serviceAccount = require("./serviceAccountKey.json");
+import { initializeApp, cert, getApps } from "firebase-admin/app";
+import { getMessaging } from "firebase-admin/messaging";
+
+// এনভায়রনমেন্ট ভ্যারিয়েবল থেকে ফায়ারবেস সার্ভিস ক্রিকেনশিয়াল রিড করা
+const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE);
 
 if (!getApps().length) {
   initializeApp({
     credential: cert(serviceAccount)
   });
 }
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 
