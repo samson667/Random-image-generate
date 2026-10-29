@@ -1,11 +1,11 @@
 {
   "name": "image-backend",
   "version": "1.0.0",
+  "type": "module",
   "description": "Random image API for monorepo learning",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "type": "module"
+    "start": "node index.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
