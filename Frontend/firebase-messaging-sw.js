@@ -1,4 +1,3 @@
-// Firebase App এবং Messaging এর Compat ভার্সন importScripts দিয়ে লোড করা হলো
 importScripts('https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging-compat.js');
 
@@ -14,15 +13,15 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-// ব্যাকগ্রাউন্ড মেসেজ রিসিভ করা
 messaging.onBackgroundMessage((payload) => {
-  console.log('[firebase-messaging-sw.js] Received background message: ', payload);
-  
-  const notificationTitle = payload.notification?.title || "PixelGlow Notification";
-  const notificationOptions = {
-    body: payload.notification?.body || "আপনার জন্য নতুন আপডেট এসেছে!",
-    icon: '/favicon.ico'
+  console.log('[firebase-messaging-sw.js] Background message: ', payload);
+
+  const title = payload.notification?.title || payload.data?.title || "New Message";
+  const options = {
+    body: payload.notification?.body || payload.data?.body || "",
+    icon: '/favicon.ico',
+    badge: '/favicon.ico'
   };
 
-  self.registration.showNotification(notificationTitle, notificationOptions);
+  self.registration.showNotification(title, options);
 });

@@ -80,19 +80,32 @@ app.post("/api/send-notification", async (req, res) => {
     return res.status(400).json({ error: "FCM token is required" });
   }
 
- const message = {
+ // Backend notification payload structure
+const message = {
+  token: token,
   notification: {
-    title: title || "PixelGlow Notification",
-    body: body || "আপনার জন্য নতুন একটি ছবি জেনারেট করা হয়েছে!"
+    title: title,
+    body: body,
+  },
+  data: {
+    title: title,
+    body: body,
+    url: "https://random-photo-generate.netlify.app"
   },
   webpush: {
     headers: {
-      Urgency: "high",
-      TTL: "300"
+      Urgency: "high"
+    },
+    notification: {
+      title: title,
+      body: body,
+      icon: "/favicon.ico",
+      requireInteraction: true // Screen-e thakbe jotokhon na user dismiss korche
     }
-  },
-  token: token
+  }
 };
+
+await admin.messaging().send(message);
 
   try {
     // এখানে সরাসরি getMessaging().send() ব্যবহার করা হয়েছে যা ES Module এ ১০০% কাজ করে
