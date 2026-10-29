@@ -3,6 +3,15 @@ import cors from "cors";
 import { initializeApp, cert, getApps } from "firebase-admin/app";
 import { getMessaging } from "firebase-admin/messaging";
 import data_base from './atlas.js';
+import admin from "firebase-admin";
+import serviceAccount from "./serviceAccountKey.json" assert { type: "json" };
+
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+  });
+}
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
