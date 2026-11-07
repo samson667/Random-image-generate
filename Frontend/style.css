@@ -879,3 +879,48 @@ a {
   #notifyBtn:active {
     transform: scale(0.92); /* বাটনটিকে সামান্য ছোট করবে */
   }
+
+
+
+
+/* বাটনের স্টাইল ও ক্লিক ইফেক্ট */
+  .animated-btn {
+    padding: 10px 20px;
+    background-color: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: transform 0.1s ease, background-color 0.1s ease;
+    user-select: none;
+  }
+
+  .animated-btn:active {
+    transform: scale(0.88);
+    background-color: #3730a3;
+  }
+
+  /* জাভাস্ক্রিপ্ট দ্বারা তৈরি টোস্টের কমন সিএসএস (টপ-রাইট পজিশন) */
+  .js-toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #10b981;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    font-size: 14px;
+    font-family: sans-serif;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.3s ease-in-out;
+    z-index: 9999;
+  }
+
+  /* যখন টোস্টটি স্ক্রিনে ভেসে উঠবে */
+  .js-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+  }

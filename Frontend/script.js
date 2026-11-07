@@ -122,7 +122,31 @@ if (notifyBtn) {
         console.log("Database save response:", result);
         
         if (result.success) {
-          alert(result.message);
+
+          // ১. জাভাস্ক্রিপ্ট দিয়ে নতুন একটি div তৈরি করা
+          const toast = document.createElement("div");
+          toast.className = "js-toast";
+          toast.innerText = result.message;
+
+          // ২. বডির ভেতরে টোস্টটি অ্যাপেন্ড করা
+          document.body.appendChild(toast);
+
+          // ৩. সামান্য ডিলে দিয়ে 'show' ক্লাস যোগ করা যাতে অ্যানিমেশন কাজ করে
+          setTimeout(() => {
+            toast.classList.add("show");
+          }, 10);
+
+          // ৪. ৩ সেকেন্ড পর টোস্টটি ফেইড-আউট করে ডোম থেকে চিরطরে মুছে ফেলা
+          setTimeout(() => {
+            toast.classList.remove("show");
+            
+            // অ্যানিমেশন শেষ হওয়ার পর এলিমেন্ট রিমোভ হবে
+            setTimeout(() => {
+              toast.remove();
+            }, 300);
+          }, 3000);
+
+          // alert(result.message);
         }
       } catch (error) {
         console.error("Error sending token to backend:", error);
