@@ -122,7 +122,7 @@ if (notifyBtn) {
         console.log("Database save response:", result);
         
         if (result.success) {
-          alert(" Notification is enable ");
+          alert(result.message);
         }
       } catch (error) {
         console.error("Error sending token to backend:", error);
