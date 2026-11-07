@@ -870,3 +870,12 @@ a {
     font-size: 12px;
   }
 }
+
+#notifyBtn {
+    transition: transform 0.1s ease, background-color 0.2s ease;
+  }
+  
+  /* যখন মাউস বা আঙুল দিয়ে চেপে ধরে রাখা হবে (ক্লিক পড়বে) */
+  #notifyBtn:active {
+    transform: scale(0.92); /* বাটনটিকে সামান্য ছোট করবে */
+  }
