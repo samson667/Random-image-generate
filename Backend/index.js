@@ -48,13 +48,13 @@ app.post("/api/save-token", async (req, res) => {
     console.log("Token successfully saved to DB:", savedData);
     res.status(200).json({ 
       success: true, 
-      message: "Token saved successfully with timestamp!" 
+      message: "Just Enable 🔔" 
     });
   } catch (error) {
     if (error.code === 11000) {
       return res.status(200).json({ 
         success: true, 
-        message: "Token already exists in database." 
+        message: " Already Enable saved ✅" 
       });
     }
     console.error("Error saving token to DB:", error);
